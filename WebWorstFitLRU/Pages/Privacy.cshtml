@@ -1,0 +1,74 @@
+﻿@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "LRU";
+}
+<h1 class="display-4 text-center">@ViewData["Title"]</h1>
+
+<div class="container w-50">
+    <form asp-page-handler="Lru" method="post" style="margin-bottom:100px;">
+        <div class="form-group">
+            <label for="pageStr">Enter page string</label>
+            <input type="text" name="pagesStr" class="form-control" id="pagesStr">
+        </div>
+        <div class="form-group">
+            <label for="capacity">Enter capacity</label>
+            <input type="number" name="capacity" class="form-control" id="capacity">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<hr />
+@{
+
+    if (Model.LRUModels.Count != 0)
+    {
+        string inputPageString = "";
+        foreach (var str in Model.InputPages) inputPageString += ("{ " + str + "};  ");
+
+        <h3 class="text-dark" style="margin-top:100px;">Input page string: @inputPageString</h3>
+        <h3 class="text-dark">Input capacity: @Model.InputCapacity</h3>
+        <div class="alert alert-light">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        @{
+                            int counter = 1;
+                            foreach (var i in Model.InputPages)
+                            {
+                                <th scope="colgroup">@i</th>
+                                counter++;
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var max = Model.LRUModels.Max(p => p.AllocatedPages.Count);
+                        for (int i = 0; i < max; i++)
+                        {
+                            <tr>
+                                @foreach (var p in Model.LRUModels)
+                                {
+
+                                    if (p.AllocatedPages.Count > i)
+                                    {
+                                        <th scope="row">@p.AllocatedPages[i]</th>
+
+                                    }
+                                    else if (p.AllocatedPages.Count < i)
+                                    {
+
+                                        <th scope="row">-</th>
+                                    }
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <h1>Total page faults: <b>@Model.PageFaults</b></h1>
+        </div>
+
+    }
+}
