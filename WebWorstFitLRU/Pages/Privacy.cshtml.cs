@@ -11,14 +11,12 @@ namespace WebWorstFitLRU.Pages
 {
     public class PrivacyModel : PageModel
     {
-        public List<WorstFitModel> WorstFitModels { get; set; }
+        
         public List<LRUModel> LRUModels { get; set; }
         public int PageFaults { get; set; }
         public List<string> InputPages { get; set; }
         public int InputCapacity { get; set; }
-        public List<string> InputProcesses { get; set; }
-        public List<string> InputBlocks { get; set; }
-
+      
         public IActionResult OnGet()
         {
 

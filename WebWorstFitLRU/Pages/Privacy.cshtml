@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "LRU";
 }
+<style>
+    #vertical thead, #vertical tbody{
+        display:inline-block;
+    }
+</style>
 <h1 class="display-4 text-center">@ViewData["Title"]</h1>
 
 <div class="container w-50">
@@ -15,60 +20,45 @@
             <label for="capacity">Enter capacity</label>
             <input type="number" name="capacity" class="form-control" id="capacity">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" data-toggle="collapse">Submit</button>
     </form>
 </div>
 <hr />
 @{
 
-    if (Model.LRUModels.Count != 0)
-    {
-        string inputPageString = "";
-        foreach (var str in Model.InputPages) inputPageString += ("{ " + str + "};  ");
-
-        <h3 class="text-dark" style="margin-top:100px;">Input page string: @inputPageString</h3>
-        <h3 class="text-dark">Input capacity: @Model.InputCapacity</h3>
-        <div class="alert alert-light">
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
+    
+        if (Model.LRUModels.Count != 0)
+        {
+            
+    <div class="alert alert-light">
+        <h3>Number of faults: <b>@Model.PageFaults</b></h3>
+        <table class="table table-striped " id="vertical">
+            <thead>
                         @{
                             int counter = 1;
                             foreach (var i in Model.InputPages)
                             {
-                                <th scope="colgroup">@i</th>
-                                counter++;
-                            }
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        var max = Model.LRUModels.Max(p => p.AllocatedPages.Count);
-                        for (int i = 0; i < max; i++)
-                        {
-                            <tr>
-                                @foreach (var p in Model.LRUModels)
-                                {
-
-                                    if (p.AllocatedPages.Count > i)
-                                    {
-                                        <th scope="row">@p.AllocatedPages[i]</th>
-
-                                    }
-                                    else if (p.AllocatedPages.Count < i)
-                                    {
-
-                                        <th scope="row">-</th>
-                                    }
+                        <tr><th scope="col">@i</th></tr>
+                                    counter++;
                                 }
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-            <h1>Total page faults: <b>@Model.PageFaults</b></h1>
-        </div>
+                            }
+                    </thead>
+            <tbody class="">
+                @{
+                    var max = Model.LRUModels.Max(p => p.AllocatedPages.Count);
+                    foreach (var model in Model.LRUModels)
+                    {
+                        <tr>
+                            @foreach (var p in model.AllocatedPages)
+                            {
 
+                                <th scope="row">@p</th>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+        }
     }
-}

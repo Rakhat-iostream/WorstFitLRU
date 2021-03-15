@@ -13,9 +13,7 @@ namespace WebWorstFitLRU.Pages
     {
         public List<WorstFitModel> WorstFitModels { get; set; }
         public List<LRUModel> LRUModels { get; set; }
-        public int PageFaults { get; set; }
-        public List<string> InputPages { get; set; }
-        public int InputCapacity { get; set; }
+       
         public List<string> InputProcesses { get; set; }
         public List<string> InputBlocks { get; set; }
         public IActionResult OnGet()
@@ -25,7 +23,7 @@ namespace WebWorstFitLRU.Pages
             return Page();
         }
 
-        public IActionResult OnPostBestFit(string blocksStr, string processesStr)
+        public IActionResult OnPostWorstFit(string blocksStr, string processesStr)
         {
             var blocksArr = blocksStr.Split(' ');
             var processesArr = processesStr.Split(' ');
